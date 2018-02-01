@@ -29,6 +29,7 @@ class subinfo(info.infoclass):
 
     def setDependencies(self):
         self.buildDependencies["virtual/bin-base"] = "default"
+        self.buildDependencies["craft/craft-blueprints-kdab"] = "default"
 
 
 class Package(BinaryPackageBase):
