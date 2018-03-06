@@ -16,7 +16,8 @@ class subinfo(info.infoclass):
         self.targetDigests["master"] = ([], CraftHash.HashAlgorithm.SHA256)
         for abi in manifest.packages.keys():
             # use the probe only builds
-            if abi == "windows-msvc2017_64-cl":
+            print(CraftCore.compiler)
+            if abi == str(CraftCore.compiler):
                 continue
             if not "qt-apps/gammaray" in manifest.packages[abi]:
                 continue
