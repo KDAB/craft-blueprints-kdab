@@ -10,7 +10,7 @@ class subinfo(info.infoclass):
     vlc_ver = None
 
     def setTargets(self):
-        manifest = CraftManifest.fromJson(CraftCore.cache.cacheJsonFromUrl("http://downloads.kdab.com/ci/gammaray/binaries/manifest.json"))
+        manifest = CraftManifest.fromJson(CraftCore.cache.cacheJsonFromUrl("http://downloads.kdab.com/ci/cache/gammaray/binaries/manifest.json"))
 
         self.targets["master"] = []
         self.targetDigests["master"] = ([], CraftHash.HashAlgorithm.SHA256)
