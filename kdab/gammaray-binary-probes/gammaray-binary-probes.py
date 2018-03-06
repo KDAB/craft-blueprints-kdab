@@ -10,7 +10,8 @@ class subinfo(info.infoclass):
     vlc_ver = None
 
     def setTargets(self):
-        manifest = CraftManifest.fromJson(CraftCore.cache.cacheJsonFromUrl("http://downloads.kdab.com/ci/cache/gammaray/binaries/manifest.json"))
+        repo = "http://downloads.kdab.com/ci/cache/gammaray/binaries"
+        manifest = CraftManifest.fromJson(CraftCore.cache.cacheJsonFromUrl(f"{repo}/manifest.json"))
 
         self.targets["master"] = []
         self.targetDigests["master"] = ([], CraftHash.HashAlgorithm.SHA256)
@@ -23,7 +24,7 @@ class subinfo(info.infoclass):
             latest = manifest.packages[abi]["qt-apps/gammaray"].latest
             if latest.fileName.endswith(".exe"):
                 continue
-            self.targets["master"].append(f"http://downloads.kdab.com/ci/gammaray/binaries/{latest.fileName}")
+            self.targets["master"].append(f"{repo}/{latest.fileName}")
             self.targetDigests["master"][0].append(latest.checksum)
 
         self.description = "Multiple probes for GammaRay"
