@@ -25,8 +25,12 @@ class subinfo(info.infoclass):
 class Package(CMakePackageBase):
     def __init__(self, **args):
         CMakePackageBase.__init__(self)
-        if ("Paths", "Python27") in CraftCore.settings:
-            python = os.path.join(CraftCore.settings.get("Paths", "Python27"), f"python{CraftCore.compiler.executableSuffix}")
-        if os.path.exists(python):
-            self.subinfo.options.configure.args += f" -DPYTHON_EXECUTABLE=\"{python}\""
+        self.supportsNinja = False
+        if ("Paths", "Python") in CraftCore.settings:
+            python = os.path.join(CraftCore.settings.get("Paths", "Python"), f"python{CraftCore.compiler.executableSuffix}")
+        if not os.path.exists(python):
+            if CraftCore.compiler.isWindows:
+                CraftCore.log.warning(f"Could not find {python} as provided by [Paths]Python, using {sys.executable} as a fallback")
+            python = sys.executable
+        self.subinfo.options.configure.args += f" -DPYTHON_EXECUTABLE=\"{python}\""
         self.subinfo.options.configure.args += f" -DLLVM_CONFIG=\"{os.path.join(CraftCore.standardDirs.craftRoot(), 'bin', 'llvm-config')}\""
