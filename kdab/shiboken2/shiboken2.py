@@ -9,12 +9,16 @@ class subinfo(info.infoclass):
         for ver in ["5.9", "5.11", "dev"]:
           self.svnTargets[ver] = f"git://code.qt.io/pyside/pyside-setup.git|{ver}"
           self.targetConfigurePath[ver] = "sources/shiboken2"
-        self.defaultTarget = "dev"
 
-
+        qtver = CraftVersion(CraftPackageObject.get("libs/qt5/qtbase").version)
+        if qtver > "5.10.1":
+            self.defaultTarget = "dev"
+        elif qtver > "5.9":
+            self.defaultTarget = "5.11"
+        else:
+            self.defaultTarget = "5.9"
 
     def setDependencies(self):
-        self.buildDependencies["dev-utils/python2"] = None
         self.runtimeDependencies["libs/libxml2"] = None
         self.runtimeDependencies["libs/libxslt"] = None
         self.runtimeDependencies["libs/qt5/qtbase"] = None
@@ -25,7 +29,6 @@ class subinfo(info.infoclass):
 class Package(CMakePackageBase):
     def __init__(self, **args):
         CMakePackageBase.__init__(self)
-        self.supportsNinja = False
         if ("Paths", "Python") in CraftCore.settings:
             python = os.path.join(CraftCore.settings.get("Paths", "Python"), f"python{CraftCore.compiler.executableSuffix}")
         if not os.path.exists(python):

@@ -9,13 +9,19 @@ class subinfo(info.infoclass):
         for ver in ["5.9", "5.11", "dev"]:
           self.svnTargets[ver] = f"git://code.qt.io/pyside/pyside-setup.git|{ver}"
           self.targetConfigurePath[ver] = "sources/pyside2"
-        self.defaultTarget = "dev"
+
+        qtver = CraftVersion(CraftPackageObject.get("libs/qt5/qtbase").version)
+        if qtver > "5.10.1":
+            self.defaultTarget = "dev"
+        elif qtver > "5.9":
+            self.defaultTarget = "5.11"
+        else:
+            self.defaultTarget = "5.9"
 
 
 
     def setDependencies(self):
-        self.buildDependencies["dev-utils/python2"] = None
-        self.runtimeDependencies["kdab/shiboken2"] = None
+        self.runtimeDependencies["kdab/shiboken2"] = self.defaultTarget
         self.runtimeDependencies["libs/qt5"] = None
         self.runtimeDependencies["libs/llvm-meta/llvm"] = None
 
