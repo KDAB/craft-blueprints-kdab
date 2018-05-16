@@ -23,7 +23,6 @@ class subinfo(info.infoclass):
     def setDependencies(self):
         self.runtimeDependencies["kdab/shiboken2"] = self.defaultTarget
         self.runtimeDependencies["libs/qt5"] = None
-        self.runtimeDependencies["libs/llvm-meta/llvm"] = None
 
 
 class Package(CMakePackageBase):
@@ -42,7 +41,6 @@ class Package(CMakePackageBase):
                 CraftCore.log.warning(f"Could not find {python} as provided by [Paths]Python, using {sys.executable} as a fallback")
             python = sys.executable
         defines += f" -DPYTHON_EXECUTABLE=\"{python}\""
-        defines += f" -DLLVM_CONFIG=\"{os.path.join(CraftCore.standardDirs.craftRoot(), 'bin', 'llvm-config')}\""
 
         disabledModules = ["WebKit", "WebKitWidgets"]
 
